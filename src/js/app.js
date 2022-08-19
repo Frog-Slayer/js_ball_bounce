@@ -1,4 +1,3 @@
-import { Aim } from "./aim.js";
 import { Bead } from "./bead.js";
 import { Point } from "./point.js";
 
@@ -14,7 +13,7 @@ export class App{
         this.makingAim = false; 
         this.mousePos = new Point();
 
-        this.bead = new Bead(100, 300, 10, this.stageWidth, this.stageHeight, this.makingAim);
+        this.bead = new Bead(100, 300, 50, this.stageWidth, this.stageHeight, this.makingAim);
         
         requestAnimationFrame(this.animate.bind(this));
         
@@ -22,6 +21,11 @@ export class App{
         this.canvas.addEventListener('pointerdown', this.onDown.bind(this),false);
         this.canvas.addEventListener('pointermove', this.onMove.bind(this),false);
         this.canvas.addEventListener('pointerup', this.onUp.bind(this),false);
+
+        this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this),false);
+        this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this),false);
+        this.canvas.addEventListener('touchend', this.onTouchEnd.bind(this),false);
+
     }
 
     resize(){
@@ -40,7 +44,6 @@ export class App{
         if (this.bead.collide(this.mousePos)){
             this.makingAim = true;
             this.bead.changeAim(this.mousePos);
-            console.log("down");
         }
         else this.makingAim = false;
     }
@@ -48,15 +51,44 @@ export class App{
     onMove(e){
         this.mousePos.x = e.clientX;
         this.mousePos.y = e.clientY;
+        
         if (this.makingAim) this.bead.changeAim(this.mousePos);
     }
 
     onUp(e){
         this.mousePos.x = e.clientX;
         this.mousePos.y = e.clientY;
+
         if (this.makingAim) this.bead.shoot(this.mousePos);
         this.makingAim = false;
     }
+
+    onTouchStart(e){
+        this.mousePos.x = e.changedTouches[0].clientX;
+        this.mousePos.y = e.changedTouches[0].clientY;
+        
+        if (this.bead.collide(this.mousePos)){
+            this.makingAim = true;
+            this.bead.changeAim(this.mousePos);
+        }
+        else this.makingAim = false;
+    }
+
+    onTouchMove(e){
+        this.mousePos.x = e.changedTouches[0].clientX;
+        this.mousePos.y = e.changedTouches[0].clientY;
+        
+        if (this.makingAim) this.bead.changeAim(this.mousePos);
+    }
+
+    onTouchEnd(e){
+        this.mousePos.x = e.changedTouches[0].clientX;
+        this.mousePos.y = e.changedTouches[0].clientY;
+        if (this.makingAim) this.bead.shoot(this.mousePos);
+        this.makingAim = false;
+    }
+
+
 
 
     animate(t){

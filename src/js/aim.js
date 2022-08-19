@@ -32,7 +32,6 @@ export class Aim{
         this.targetY = point.y;
         this.radius = this.getDist(point) / 4 * 3;
         this.setAngle(point); 
-        console.log(this.angle);
     }
 
     getDist(point){

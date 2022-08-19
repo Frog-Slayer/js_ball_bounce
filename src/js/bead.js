@@ -1,9 +1,9 @@
 import { Aim } from "./aim.js";
 
-const GRAVITY = 0.00005;
+const GRAVITY = 0.00004;
 const PER = 0.0005;
-const COR = 0.6;
-const FRICTION = 0.01;
+const COR = 0.7;
+const FRICTION = 0.02;
 const FPS = 400/60;
 
 export class Bead{
