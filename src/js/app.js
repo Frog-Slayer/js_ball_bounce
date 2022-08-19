@@ -14,7 +14,8 @@ export class App{
         this.makingAim = false; 
         this.mousePos = new Point();
 
-        this.bead = new Bead(100, 300, 50, this.stageWidth, this.stageHeight, this.makingAim);
+        this.bead = new Bead(100, 300, 10, this.stageWidth, this.stageHeight, this.makingAim);
+        
         requestAnimationFrame(this.animate.bind(this));
         
 

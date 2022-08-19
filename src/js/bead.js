@@ -1,8 +1,10 @@
 import { Aim } from "./aim.js";
 
-const GRAVITY = 0.00000005;
-const FORCE = 0.0001;
+const GRAVITY = 0.00005;
+const PER = 0.0005;
 const COR = 0.6;
+const FRICTION = 0.01;
+const FPS = 400/60;
 
 export class Bead{
     constructor(x, y, radius, stageWidth, stageHeight, makingAim){
@@ -42,36 +44,39 @@ export class Bead{
             return;
         }
         this.newTime = new Date().getTime();
-        this.newY = this.y + this.yv * (this.time - this.newTime);
-        this.newX = this.x + this.xv * (this.time - this.newTime);
+        this.newY = this.y + this.yv * (this.time - this.newTime) / FPS;
+        this.newX = this.x + this.xv * (this.time - this.newTime) / FPS;
 
         this.containerCollision();
 
         this.x = this.newX;
         this.y = this.newY;
 
-        this.xv += this.xa * (this.time - this.newTime);
-        this.yv += this.ya * (this.time - this.newTime);
+        this.xv += this.xa * (this.time - this.newTime) / FPS;
+        this.yv += this.ya * (this.time - this.newTime) / FPS;
     }
 
     containerCollision(){
         if (this.newY >= this.stageHeight - this.radius){
             this.newY = this.stageHeight - this.radius;
             this.yv *= -COR;
+            this.xv *= (1 - FRICTION);
 
         }
         else if (this.newY < this.radius){
             this.newY = this.radius;
             this.yv *= -COR;
+            this.xv *= (1 - FRICTION);
         }
-        
         if (this.newX >= this.stageWidth - this.radius){
             this.newX = this.stageWidth - this.radius;
             this.xv *= -COR;
+            this.yv *= (1 - FRICTION);
         }
         else if (this.newX < this.radius){
             this.newX = this.radius;
             this.xv *= -COR;
+            this.yv *= (1 - FRICTION);
         }
     }
 
@@ -89,8 +94,8 @@ export class Bead{
         this.time = new Date().getTime();
         this.makingAim = false;
         this.aim.setRadius(0);
-        this.yv = (this.y - point.y) * FORCE;
-        this.xv = (this.x - point.x) * FORCE;
+        this.yv = (this.y - point.y) * PER;
+        this.xv = (this.x - point.x) * PER;
     }
 
     getDist(point){
