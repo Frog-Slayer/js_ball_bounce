@@ -1,2 +1,2 @@
-# js_mobile
-빙글빙글
+# js_ball_bounce
+통통
