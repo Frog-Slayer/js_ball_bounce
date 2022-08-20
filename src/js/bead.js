@@ -1,4 +1,4 @@
-import { Aim } from "./aim.js";
+import { Aim } from "src/js/aim.js";
 
 const GRAVITY = 0.00004;
 const PER = 0.0005;

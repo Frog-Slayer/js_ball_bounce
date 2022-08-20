@@ -1,5 +1,5 @@
-import { Bead } from "./bead.js";
-import { Point } from "./point.js";
+import { Bead } from "/src/js/bead.js";
+import { Point } from "/src/js/point.js";
 
 export class App{
     constructor(){
