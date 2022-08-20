@@ -1,6 +1,3 @@
-const FPS = 1000 / 60;
-const GRAVITY = 0.001;
-const ELAST = 2;
 const ANGLE = 0.05 * Math.PI;
 
 export class Aim{

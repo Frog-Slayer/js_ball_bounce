@@ -28,6 +28,9 @@ export class Bead{
 
         this.time = new Date().getTime();
         this.dt = 0;
+        this.alpha = 0;
+        this.beta = 0;
+        this.gamma = 0;
     }
 
     draw(ctx){
@@ -35,6 +38,15 @@ export class Bead{
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(this.stageWidth/2, this.stageHeight/2);
+        ctx.lineTo(this.stageWidth/2 + this.xa / this.getDist2({x: this.xa, y: this.ya}, {x: 0, y: 0}) * 200, 
+                    this.stageHeight/2 + this.ya / this.getDist2({x: this.xa, y: this.ya}, {x: 0, y: 0}) * 200);
+        ctx.strokeStyle = "red"
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
         this.update();
         this.aim.draw(ctx);
     }
@@ -43,17 +55,17 @@ export class Bead{
         if (this.makingAim){
             return;
         }
-        this.newTime = new Date().getTime();
-        this.newY = this.y + this.yv * (this.time - this.newTime) / FPS;
-        this.newX = this.x + this.xv * (this.time - this.newTime) / FPS;
+        let newTime = new Date().getTime();
+        this.dt = this.time - newTime; 
+        this.xv += this.xa * this.dt / FPS;
+        this.yv += this.ya * this.dt / FPS;
+        this.newY = this.y + this.yv * this.dt / FPS;
+        this.newX = this.x + this.xv * this.dt / FPS;
 
         this.containerCollision();
 
         this.x = this.newX;
         this.y = this.newY;
-
-        this.xv += this.xa * (this.time - this.newTime) / FPS;
-        this.yv += this.ya * (this.time - this.newTime) / FPS;
     }
 
     containerCollision(){
@@ -80,7 +92,6 @@ export class Bead{
         }
     }
 
-
     collide(point){
         return this.getDist(point) <= this.radius;
     }
@@ -98,8 +109,52 @@ export class Bead{
         this.xv = (this.x - point.x) * PER;
     }
 
+    tilt(alpha, beta, gamma){
+        if (!(alpha || beta || gamma)){
+            return;
+        }
+        let alphaRad = (-alpha) * Math.PI / 180;
+        let betaRad  = (-beta) * Math.PI / 180;
+        let gammaRad = (gamma) * Math.PI / 180;
+        let acc = {x : 0, y: 0, z: -GRAVITY};
+        acc = this.yaw(this.pitch(this.roll(acc, alphaRad), betaRad), gammaRad);
+        this.alpha = alpha;
+        this.beta = beta;
+        this.gamma= gamma;
+
+        this.xa = acc.x;
+        this.ya = acc.z;
+        this.za = acc.y;
+    }
+
+    roll(acc, alpha){
+        let newX = Math.cos(alpha) * acc.x- Math.sin(alpha) * acc.y;
+        let newY = Math.sin(alpha) * acc.x + Math.cos(alpha) * acc.y;
+        let newZ = acc.z;
+        return {x :newX, y: newY, z: newZ};
+    }
+
+    pitch(acc, beta){
+        let newX = acc.x;
+        let newY = Math.cos(beta) * acc.y - Math.sin(beta) * acc.z;
+        let newZ = Math.sin(beta) * acc.y + Math.cos(beta) * acc.z;
+        console.log(newX, newY, newZ);
+        return {x : newX, y : newY, z : newZ};
+    }
+
+    yaw(acc, gamma) {
+        let newX = Math.cos(gamma) * acc.x + Math.sin(gamma) * acc.z;
+        let newY = acc.y;
+        let newZ = -Math.sin(gamma) * acc.x + Math.cos(gamma) * acc.z;
+        return {x: newX, y: newY, z: newZ};
+    }
+
     getDist(point){
         return Math.sqrt((this.x - point.x)**2 + (this.y - point.y)**2);
+    }
+
+    getDist2(point1, point2){
+        return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y)**2);
     }
 
 }

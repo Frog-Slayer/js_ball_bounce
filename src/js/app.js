@@ -25,7 +25,8 @@ export class App{
         this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this),false);
         this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this),false);
         this.canvas.addEventListener('touchend', this.onTouchEnd.bind(this),false);
-
+        
+        window.addEventListener('deviceorientation', this.onDeviceOrientaiton.bind(this), false);
     }
 
     resize(){
@@ -87,6 +88,14 @@ export class App{
         if (this.makingAim) this.bead.shoot(this.mousePos);
         this.makingAim = false;
     }
+
+    onDeviceOrientaiton(e){
+        let alpha = e.alpha || 0;
+        let beta = e.beta || 0;
+        let gamma = e.gamma || 0;
+        this.bead.tilt(alpha, beta, gamma);
+    }
+
 
 
 
