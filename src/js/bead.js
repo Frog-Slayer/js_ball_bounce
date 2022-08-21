@@ -4,8 +4,8 @@ const GRAVITY = 0.00002;
 const SHOOTSPEED = 0.001;
 const COR = 0.6;
 const FRICTION = 0.02;
-const AIRRESIST = 0.001;
-const TIMEUNIT = 0.05;
+const AIRRESIST = 0.0005;
+const TIMEUNIT = 10;
 
 export class Bead{
     constructor(x, y, radius, stageWidth, stageHeight, makingAim){
@@ -71,7 +71,7 @@ export class Bead{
         this.newX = this.x + this.xv * this.dt * TIMEUNIT;
 
         this.collisionAndResistance();
-
+        this.time = newTime;
         this.x = this.newX;
         this.y = this.newY;
     }
