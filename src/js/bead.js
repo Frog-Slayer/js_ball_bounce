@@ -113,8 +113,8 @@ export class Bead{
         if (!(alpha || beta || gamma)){
             return;
         }
-        let alphaRad = (-alpha) * Math.PI / 180;
-        let betaRad  = (-beta) * Math.PI / 180;
+        let alphaRad = (alpha) * Math.PI / 180;
+        let betaRad  = (beta) * Math.PI / 180;
         let gammaRad = (gamma) * Math.PI / 180;
         let acc = {x : 0, y: 0, z: -GRAVITY};
         acc = this.yaw(this.pitch(this.roll(acc, alphaRad), betaRad), gammaRad);
