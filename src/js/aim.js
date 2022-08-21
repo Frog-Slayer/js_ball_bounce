@@ -16,7 +16,7 @@ export class Aim{
 
     draw(ctx){
         ctx.beginPath();
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = '#d61742';
         ctx.moveTo(this.targetX, this.targetY);
         ctx.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
         ctx.fill();

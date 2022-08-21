@@ -34,21 +34,28 @@ export class Bead{
     }
 
     draw(ctx){
-        ctx.fillStyle = '#fdd700';
+        ctx.fillStyle = '#fff80a';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
-
+        this.aim.draw(ctx);
+        
         ctx.beginPath();
         ctx.moveTo(this.stageWidth/2, this.stageHeight/2);
-        ctx.lineTo(this.stageWidth/2 + this.xa / this.getDist2({x: this.xa, y: this.ya}, {x: 0, y: 0}) * 200, 
-                    this.stageHeight/2 + this.ya / this.getDist2({x: this.xa, y: this.ya}, {x: 0, y: 0}) * 200);
-        ctx.strokeStyle = "red"
+        let gravX = this.stageWidth/2 + this.xa * 2000000;
+        let gravY = this.stageHeight/2 + this.ya * 2000000;
+        ctx.lineTo(gravX, gravY);
+        ctx.strokeStyle = "#feb139"
         ctx.lineWidth = 2;
         ctx.stroke();
 
+        ctx.beginPath();
+        ctx.fillStyle = "#feb139";
+        ctx.arc(gravX, gravY, 5, 0, 2* Math.PI);
+        ctx.fill();
+
         this.update();
-        this.aim.draw(ctx);
+
     }
 
     update(){
@@ -109,22 +116,25 @@ export class Bead{
         this.xv = (this.x - point.x) * PER;
     }
 
-    tilt(alpha, beta, gamma){
-        if (!(alpha || beta || gamma)){
+    deviceMotion(e){
+        let accGravity = e.accelerationIncludingGravity;
+        
+        let xa = (accGravity.x || 0) / 9.8;
+        let ya = (accGravity.y || 0) / 9.8;
+        let za = (accGravity.z || 0) / 9.8;
+
+        if (!(xa || ya || za)) {
+            this.xa = 0;
+            this.ya = GRAVITY;
             return;
         }
-        let alphaRad = (alpha) * Math.PI / 180;
-        let betaRad  = (beta) * Math.PI / 180;
-        let gammaRad = (gamma) * Math.PI / 180;
-        let acc = {x : 0, y: 0, z: -GRAVITY};
-        acc = this.yaw(this.pitch(this.roll(acc, alphaRad), betaRad), gammaRad);
-        this.alpha = alpha;
-        this.beta = beta;
-        this.gamma= gamma;
 
-        this.xa = acc.x;
-        this.ya = acc.z;
+        this.xa = xa * GRAVITY;
+        this.ya = ya * GRAVITY;
+    
     }
+
+
 
     yaw(acc, alpha){
         let newX = Math.cos(alpha) * acc.x- Math.sin(alpha) * acc.y;
