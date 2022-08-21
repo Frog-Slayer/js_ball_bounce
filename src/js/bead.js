@@ -2,8 +2,9 @@ import { Aim } from "./aim.js";
 
 const GRAVITY = 0.00002;
 const PER = 0.0005;
-const COR = 0.6;
+const COR = 0.8;
 const FRICTION = 0.02;
+const AIRRESIST = 0.01;
 const FPS = 400/60;
 
 export class Bead{
@@ -69,18 +70,17 @@ export class Bead{
         this.newY = this.y + this.yv * this.dt / FPS;
         this.newX = this.x + this.xv * this.dt / FPS;
 
-        this.containerCollision();
+        this.collisionAndResistance();
 
         this.x = this.newX;
         this.y = this.newY;
     }
 
-    containerCollision(){
+    collisionAndResistance(){
         if (this.newY >= this.stageHeight - this.radius){
             this.newY = this.stageHeight - this.radius;
             this.yv *= -COR;
             this.xv *= (1 - FRICTION);
-
         }
         else if (this.newY < this.radius){
             this.newY = this.radius;
@@ -97,6 +97,9 @@ export class Bead{
             this.xv *= -COR;
             this.yv *= (1 - FRICTION);
         }
+        
+        this.xv *= (1 - AIRRESIST);
+        this.yv *= (1 - AIRRESIST);
     }
 
     collide(point){
@@ -134,7 +137,6 @@ export class Bead{
     }
 
 
-
     yaw(acc, alpha){
         let newX = Math.cos(alpha) * acc.x- Math.sin(alpha) * acc.y;
         let newY = Math.sin(alpha) * acc.x + Math.cos(alpha) * acc.y;
@@ -159,10 +161,6 @@ export class Bead{
 
     getDist(point){
         return Math.sqrt((this.x - point.x)**2 + (this.y - point.y)**2);
-    }
-
-    getDist2(point1, point2){
-        return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y)**2);
     }
 
 }
