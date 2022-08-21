@@ -2,9 +2,9 @@ import { Aim } from "./aim.js";
 
 const GRAVITY = 0.00002;
 const PER = 0.0005;
-const COR = 0.8;
+const COR = 0.6;
 const FRICTION = 0.02;
-const AIRRESIST = 0.01;
+const AIRRESIST = 0.001;
 const FPS = 400/60;
 
 export class Bead{
@@ -90,14 +90,13 @@ export class Bead{
         if (this.newX >= this.stageWidth - this.radius){
             this.newX = this.stageWidth - this.radius;
             this.xv *= -COR;
-            this.yv *= (1 - FRICTION);
+            this.xv *= (1 - FRICTION);
         }
         else if (this.newX < this.radius){
             this.newX = this.radius;
             this.xv *= -COR;
-            this.yv *= (1 - FRICTION);
+            this.xv *= (1 - FRICTION);
         }
-        
         this.xv *= (1 - AIRRESIST);
         this.yv *= (1 - AIRRESIST);
     }
