@@ -128,7 +128,7 @@ export class Bead{
             return;
         }
 
-        this.xa = xa * GRAVITY;
+        this.xa = -xa * GRAVITY;
         this.ya = ya * GRAVITY;
     
     }
