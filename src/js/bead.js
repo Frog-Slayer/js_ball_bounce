@@ -123,7 +123,7 @@ export class Bead{
         this.gamma= gamma;
 
         this.xa = acc.x;
-        this.ya = acc.z;
+        this.ya = acc.y;
     }
 
     yaw(acc, alpha){
