@@ -135,29 +135,6 @@ export class Bead{
     
     }
 
-
-    yaw(acc, alpha){
-        let newX = Math.cos(alpha) * acc.x- Math.sin(alpha) * acc.y;
-        let newY = Math.sin(alpha) * acc.x + Math.cos(alpha) * acc.y;
-        let newZ = acc.z;
-        return {x :newX, y: newY, z: newZ};
-    }
-
-    pitch(acc, beta){
-        let newX = acc.x;
-        let newY = Math.cos(beta) * acc.y - Math.sin(beta) * acc.z;
-        let newZ = Math.sin(beta) * acc.y + Math.cos(beta) * acc.z;
-        console.log(newX, newY, newZ);
-        return {x : newX, y : newY, z : newZ};
-    }
-
-    roll(acc, gamma) {
-        let newX = Math.cos(gamma) * acc.x + Math.sin(gamma) * acc.z;
-        let newY = acc.y;
-        let newZ = -Math.sin(gamma) * acc.x + Math.cos(gamma) * acc.z;
-        return {x: newX, y: newY, z: newZ};
-    }
-
     getDist(point){
         return Math.sqrt((this.x - point.x)**2 + (this.y - point.y)**2);
     }
