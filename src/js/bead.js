@@ -1,11 +1,11 @@
 import { Aim } from "./aim.js";
-
 const GRAVITY = 0.00002;
 const SHOOTSPEED = 0.001;
 const COR = 0.6;
 const FRICTION = 0.02;
 const AIRRESIST = 0.0005;
 const TIMEUNIT = 10;
+const SOUNDNORM = 0.01;
 
 export class Bead{
     constructor(x, y, radius, stageWidth, stageHeight, makingAim){
@@ -29,9 +29,19 @@ export class Bead{
 
         this.time = new Date().getTime();
         this.dt = 0;
-        this.alpha = 0;
-        this.beta = 0;
-        this.gamma = 0;
+
+        this.soundArray = [];
+        for (let i = 0; i < 10; i++){
+            const sound = new Audio();
+            sound.src = "/src/Blop.mp3";
+            sound.addEventListener('ended', () => {
+                if (window.chrome){sound.load();}
+                sound.muted = true;
+                sound.pause();  
+            })
+            this.soundArray.push(sound);
+        }
+
     }
 
     draw(ctx){
@@ -65,40 +75,50 @@ export class Bead{
         }
         let newTime = new Date().getTime();
         this.dt = this.time - newTime; 
-        this.xv += this.xa * this.dt * TIMEUNIT;
-        this.yv += this.ya * this.dt * TIMEUNIT;
+        this.xv = (this.xv + this.xa * this.dt * TIMEUNIT) * (1 - AIRRESIST);
+        this.yv = (this.yv + this.ya * this.dt * TIMEUNIT) * (1 - AIRRESIST);
         this.newY = this.y + this.yv * this.dt * TIMEUNIT;
         this.newX = this.x + this.xv * this.dt * TIMEUNIT;
 
-        this.collisionAndResistance();
+        this.wallCollision();
+
         this.time = newTime;
         this.x = this.newX;
         this.y = this.newY;
     }
 
-    collisionAndResistance(){
+    wallCollision(){
         if (this.newY >= this.stageHeight - this.radius){
             this.newY = this.stageHeight - this.radius;
+            if (Math.abs(this.yv) > SOUNDNORM) this.playSound();
             this.yv *= -COR;
             this.xv *= (1 - FRICTION);
         }
         else if (this.newY < this.radius){
             this.newY = this.radius;
+            if (Math.abs(this.yv) > SOUNDNORM) this.playSound();
             this.yv *= -COR;
             this.xv *= (1 - FRICTION);
         }
+
         if (this.newX >= this.stageWidth - this.radius){
             this.newX = this.stageWidth - this.radius;
+            if (Math.abs(this.xv) > SOUNDNORM) this.playSound();
             this.xv *= -COR;
             this.yv *= (1 - FRICTION);
         }
         else if (this.newX < this.radius){
             this.newX = this.radius;
+            if (Math.abs(this.yv) > SOUNDNORM) this.playSound();
             this.xv *= -COR;
             this.yv *= (1 - FRICTION);
         }
-        this.xv *= (1 - AIRRESIST);
-        this.yv *= (1 - AIRRESIST);
+        else return false;
+        return true;
+    }
+
+    ballStopped(){
+        return false;
     }
 
     collide(point){
@@ -137,6 +157,17 @@ export class Bead{
 
     getDist(point){
         return Math.sqrt((this.x - point.x)**2 + (this.y - point.y)**2);
+    }
+
+    playSound(){
+        for (let i = 0; i < 10; i++){
+            if (this.soundArray[i].paused){
+                this.soundArray[i].play();
+                this.soundArray[i].muted = false;
+                break;
+            }
+        }
+
     }
 
 }

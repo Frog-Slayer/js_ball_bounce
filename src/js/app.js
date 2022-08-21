@@ -9,33 +9,20 @@ export class App{
 
         window.addEventListener('resize', this.resize.bind(this), false);
         this.resize();
+        this.isInit = false;
 
-        this.makingAim = false; 
-        this.mousePos = new Point();
-
-        this.bead = new Bead(100, 300, 50, this.stageWidth, this.stageHeight, this.makingAim);
-        
+        this.canvas.addEventListener('click', this.init.bind(this), { once: true});
         requestAnimationFrame(this.animate.bind(this));
-        
 
-        this.canvas.addEventListener('pointerdown', this.onDown.bind(this),false);
-        this.canvas.addEventListener('pointermove', this.onMove.bind(this),false);
-        this.canvas.addEventListener('pointerup', this.onUp.bind(this),false);
-
-        this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this),false);
-        this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this),false);
-        this.canvas.addEventListener('touchend', this.onTouchEnd.bind(this),false);
-        
-        window.addEventListener('devicemotion', this.onDeviceMotion.bind(this), false);
     }
 
     resize(){
         this.stageWidth = document.body.clientWidth;
         this.stageHeight = document.body.clientHeight;
 
-        this.canvas.width = this.stageWidth * 2;
-        this.canvas.height = this.stageHeight * 2;
-        this.ctx.scale(2, 2);
+        this.canvas.width = this.stageWidth;
+        this.canvas.height = this.stageHeight;
+        this.ctx.scale(1, 1);
     }
 
     onDown(e){
@@ -93,14 +80,35 @@ export class App{
         this.bead.deviceMotion(e);
     }
 
-
-
-
     animate(t){
         window.requestAnimationFrame(this.animate.bind(this));
         this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
-        this.bead.draw(this.ctx);
+        if(!this.isInit) {
+            this.ctx.fillStyle = 'white';
+            this.ctx.font = "normal normal 40px Bungee";
+            this.ctx.textAlign = "center";
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText("Click to Bounce!", this.stageWidth/2, this.stageHeight/2);
+        }
+        if (this.isInit) this.bead.draw(this.ctx);        
+    }
+
+    init(){
+
+        this.makingAim = false; 
+        this.mousePos = new Point();
+        this.isInit = true;
+        this.bead = new Bead(this.stageWidth/2, this.stageHeight/2, 50, this.stageWidth, this.stageHeight, this.makingAim);
+
+        this.canvas.addEventListener('pointerdown', this.onDown.bind(this),false);
+        this.canvas.addEventListener('pointermove', this.onMove.bind(this),false);
+        this.canvas.addEventListener('pointerup', this.onUp.bind(this),false);
+
+        this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this),false);
+        this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this),false);
+        this.canvas.addEventListener('touchend', this.onTouchEnd.bind(this),false);
         
+        window.addEventListener('devicemotion', this.onDeviceMotion.bind(this), false);
     }
 }
 
