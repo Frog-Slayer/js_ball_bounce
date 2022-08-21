@@ -124,10 +124,9 @@ export class Bead{
 
         this.xa = acc.x;
         this.ya = acc.z;
-        this.za = acc.y;
     }
 
-    roll(acc, alpha){
+    yaw(acc, alpha){
         let newX = Math.cos(alpha) * acc.x- Math.sin(alpha) * acc.y;
         let newY = Math.sin(alpha) * acc.x + Math.cos(alpha) * acc.y;
         let newZ = acc.z;
@@ -142,7 +141,7 @@ export class Bead{
         return {x : newX, y : newY, z : newZ};
     }
 
-    yaw(acc, gamma) {
+    roll(acc, gamma) {
         let newX = Math.cos(gamma) * acc.x + Math.sin(gamma) * acc.z;
         let newY = acc.y;
         let newZ = -Math.sin(gamma) * acc.x + Math.cos(gamma) * acc.z;
