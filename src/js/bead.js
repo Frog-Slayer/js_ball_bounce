@@ -109,7 +109,7 @@ export class Bead{
         }
         else if (this.newX < this.radius){
             this.newX = this.radius;
-            if (Math.abs(this.yv) > SOUNDNORM) this.playSound();
+            if (Math.abs(this.xv) > SOUNDNORM) this.playSound();
             this.xv *= -COR;
             this.yv *= (1 - FRICTION);
         }
