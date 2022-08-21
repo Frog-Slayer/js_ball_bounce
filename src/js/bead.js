@@ -121,7 +121,6 @@ export class Bead{
         
         let xa = (accGravity.x || 0) / 9.8;
         let ya = (accGravity.y || 0) / 9.8;
-        let za = (accGravity.z || 0) / 9.8;
 
         if (!(xa || ya || za)) {
             this.xa = 0;
@@ -129,8 +128,8 @@ export class Bead{
             return;
         }
 
-        this.xa = -Math.floor(xa * 1000000)/1000000 * GRAVITY;
-        this.ya = Math.floor(ya * 1000000)/100000 * GRAVITY;
+        this.xa = xa * GRAVITY;
+        this.ya = ya * GRAVITY;
     
     }
 
