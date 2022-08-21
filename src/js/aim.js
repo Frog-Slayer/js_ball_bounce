@@ -20,6 +20,8 @@ export class Aim{
         ctx.moveTo(this.targetX, this.targetY);
         ctx.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
         ctx.fill();
+
+
     }
 
     change(x, y, point){
