@@ -1,11 +1,11 @@
 import { Aim } from "./aim.js";
 
 const GRAVITY = 0.00002;
-const PER = 0.0005;
+const SHOOTSPEED = 0.001;
 const COR = 0.6;
 const FRICTION = 0.02;
 const AIRRESIST = 0.001;
-const FPS = 400/60;
+const TIMEUNIT = 0.05;
 
 export class Bead{
     constructor(x, y, radius, stageWidth, stageHeight, makingAim){
@@ -65,10 +65,10 @@ export class Bead{
         }
         let newTime = new Date().getTime();
         this.dt = this.time - newTime; 
-        this.xv += this.xa * this.dt / FPS;
-        this.yv += this.ya * this.dt / FPS;
-        this.newY = this.y + this.yv * this.dt / FPS;
-        this.newX = this.x + this.xv * this.dt / FPS;
+        this.xv += this.xa * this.dt * TIMEUNIT;
+        this.yv += this.ya * this.dt * TIMEUNIT;
+        this.newY = this.y + this.yv * this.dt * TIMEUNIT;
+        this.newX = this.x + this.xv * this.dt * TIMEUNIT;
 
         this.collisionAndResistance();
 
@@ -90,12 +90,12 @@ export class Bead{
         if (this.newX >= this.stageWidth - this.radius){
             this.newX = this.stageWidth - this.radius;
             this.xv *= -COR;
-            this.xv *= (1 - FRICTION);
+            this.yv *= (1 - FRICTION);
         }
         else if (this.newX < this.radius){
             this.newX = this.radius;
             this.xv *= -COR;
-            this.xv *= (1 - FRICTION);
+            this.yv *= (1 - FRICTION);
         }
         this.xv *= (1 - AIRRESIST);
         this.yv *= (1 - AIRRESIST);
@@ -114,8 +114,8 @@ export class Bead{
         this.time = new Date().getTime();
         this.makingAim = false;
         this.aim.setRadius(0);
-        this.yv = (this.y - point.y) * PER;
-        this.xv = (this.x - point.x) * PER;
+        this.yv = (this.y - point.y) * SHOOTSPEED;
+        this.xv = (this.x - point.x) * SHOOTSPEED;
     }
 
     deviceMotion(e){
@@ -124,7 +124,7 @@ export class Bead{
         let xa = (accGravity.x || 0) / 9.8;
         let ya = (accGravity.y || 0) / 9.8;
 
-        if (!(xa || ya || za)) {
+        if (!(xa || ya)) {
             this.xa = 0;
             this.ya = GRAVITY;
             return;
