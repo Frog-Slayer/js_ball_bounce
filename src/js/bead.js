@@ -1,8 +1,8 @@
 import { Aim } from "./aim.js";
 
-const GRAVITY = 0.00004;
+const GRAVITY = 0.00002;
 const PER = 0.0005;
-const COR = 0.7;
+const COR = 0.6;
 const FRICTION = 0.02;
 const FPS = 400/60;
 
@@ -129,8 +129,8 @@ export class Bead{
             return;
         }
 
-        this.xa = -Math.floor(xa * 10000)/10000 * GRAVITY;
-        this.ya = Math.floor(ya * 10000)/10000 * GRAVITY;
+        this.xa = -Math.floor(xa * 1000000)/1000000 * GRAVITY;
+        this.ya = Math.floor(ya * 1000000)/100000 * GRAVITY;
     
     }
 
