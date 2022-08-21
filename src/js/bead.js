@@ -33,7 +33,7 @@ export class Bead{
         this.soundArray = [];
         for (let i = 0; i < 10; i++){
             const sound = new Audio();
-            sound.src = "../Blop.mp3";
+            sound.src = "/js_ball_bounce/src/Blop.mp3";
             sound.addEventListener('ended', () => {
                 if (window.chrome){sound.load();}
                 sound.muted = true;
