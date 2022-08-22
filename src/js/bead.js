@@ -115,10 +115,6 @@ export class Bead{
         }
     }
 
-    ballStopped(){
-        return false;
-    }
-
     collide(point){
         return this.getDist(point) <= this.radius;
     }

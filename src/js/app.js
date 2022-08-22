@@ -80,7 +80,7 @@ export class App{
         this.bead.deviceMotion(e);
     }
 
-    animate(t){
+    animate(){
         window.requestAnimationFrame(this.animate.bind(this));
         this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
         if(!this.isInit) {
