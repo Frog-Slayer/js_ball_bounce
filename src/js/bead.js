@@ -113,8 +113,6 @@ export class Bead{
             this.xv *= -COR;
             this.yv *= (1 - FRICTION);
         }
-        else return false;
-        return true;
     }
 
     ballStopped(){
