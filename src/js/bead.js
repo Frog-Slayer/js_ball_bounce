@@ -8,14 +8,14 @@ const TIMEUNIT = 10;
 const SOUNDNORM = 0.01;
 
 export class Bead{
-    constructor(x, y, radius, stageWidth, stageHeight, makingAim){
+    constructor(x, y, radius, stageWidth, stageHeight){
         this.stageWidth = stageWidth;
         this.stageHeight = stageHeight;
         this.x = x;
         this.y = y;
         this.radius = radius;
 
-        this.makingAim = makingAim;
+        this.makingAim = false;
         this.aim = new Aim(x, y, 0, stageWidth, stageHeight);
 
         this.newX = x;
@@ -143,10 +143,8 @@ export class Bead{
             this.ya = GRAVITY;
             return;
         }
-
         this.xa = -xa * GRAVITY;
         this.ya = ya * GRAVITY;
-    
     }
 
     getDist(point){
@@ -161,7 +159,6 @@ export class Bead{
                 break;
             }
         }
-
     }
 
 }

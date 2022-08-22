@@ -98,7 +98,7 @@ export class App{
         this.makingAim = false; 
         this.mousePos = new Point();
         this.isInit = true;
-        this.bead = new Bead(this.stageWidth/2, this.stageHeight/2, 50, this.stageWidth, this.stageHeight, this.makingAim);
+        this.bead = new Bead(this.stageWidth/2, this.stageHeight/2, 50, this.stageWidth, this.stageHeight);
 
         this.canvas.addEventListener('pointerdown', this.onDown.bind(this),false);
         this.canvas.addEventListener('pointermove', this.onMove.bind(this),false);
